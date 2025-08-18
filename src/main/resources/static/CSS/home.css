@@ -1,0 +1,26 @@
+.selection {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 1.5em;
+}
+
+.vertical-text-container {
+	position: absolute;
+	left: 0;
+	top: -65%;
+}
+
+.vertical-text {
+	writing-mode: vertical-rl;
+	rotate: -180deg;
+	color: var(--light-grey);
+	font-size: 8rem;
+	font-weight: 400;
+	color: var(--light-grey);
+}
+
+.home-h1 {
+	padding-top: 3.25em;
+}
+

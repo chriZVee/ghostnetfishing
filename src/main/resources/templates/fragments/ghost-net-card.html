@@ -1,0 +1,27 @@
+<div th:fragment="ghostNetCard" class="ghost-net-card"
+	xmlns:th="http://www.thymeleaf.org">
+
+
+	<div class="item-group Id">
+		<p>Id</p>
+		<p>#1</p>
+	</div>
+	<div class="item-group gps-coordinates">
+		<p>GPS-Koordinaten</p>
+		<p>-20.1234, 100.5678</p>
+	</div>
+
+	<div class="item-group size">
+		<p>Größe</p>
+		<p>20m²</p>
+	</div>
+	<div class="item-group">
+		<th:block
+			th:replace="~{fragments/ghost-net-card-buttons :: ghostNetCardButtons}"></th:block>
+	</div>
+</div>
+
+
+
+
+

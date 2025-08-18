@@ -1,0 +1,325 @@
+/* GLOBAL */
+:root {
+	/* Farben */
+	--highlight: #FFFFFF;
+	--link-hover: #CCCCCC;
+	--text: #000;
+	--button-unchecked: #F2F2F2;
+	--button-checked: #FFF;
+	--button-text: #FFF;
+	--h2: #000;
+	--light-grey: #D9D9D9;
+	--medium-grey: #A0A0A0;
+	--dark-grey: #747474;
+	--warning: #FF4000;
+	--standard-background: #C7C7C7;
+	--dark-background: #444444;
+
+	/* Font */
+	--font-small: 0.8rem;
+	--font-base: 1rem;
+	--font-medium: 1.3rem;
+	--font-ml: 1.5rem;
+	--font-large: 1.8rem;
+	--font-xl: 2.4rem;
+	--font-xxl: 4.8rem;
+	--font-h2: 1.2rem;
+	--font-h1: 2rem;
+	--font-button: 1.3rem;
+	--font-legend: 1rem;
+	line-height: 1.5;
+	width: auto;
+	--global-font: "Roboto", "Segoe UI", "Helvetica Neue", sans-serif;
+	--font-small: 0.8rem;
+	--heading-font: "Bebas Neue", "Helvetica Neue";
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body, html {
+	font-size: 18px;
+	font-family: var(--global-font);
+	background-color: var(--standard-background);
+	font-weight: 400;
+	/* margin reset */
+	margin: 0;
+	max-width: 100%;
+	width: 100%;
+	overflow-x: hidden;
+}
+
+body {
+	/* flexbox */
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+/* Content bezieht Restgröße */
+main {
+	flex: 1 0 auto;
+}
+
+.section-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 3em;
+	align-items: stretch;
+}
+
+.section {
+	width: 100%;
+}
+
+/* .initial-space { */
+/* 	display: flex; */
+/* 	flex-direction: column; */
+/* 	gap: 12em; */
+/* } */
+.relative {
+	position: relative;
+}
+
+@media ( max-width : 480px) {
+	html {
+		width: fit-content;
+	}
+}
+
+.header, .footer, .content {
+	width: 100%;
+}
+
+header, footer {
+	flex-shrink: 0;
+}
+
+h1 {
+	font-size: var(--font-h1);
+	text-align: center;
+	padding: 4.25rem 0 2.5rem 0;
+	font-weight: bold;
+}
+
+@media ( max-width : 1440px) {
+	h1 {
+		padding: 0 0;
+		font-size: var(--font-large);
+	}
+}
+
+@media ( max-width : 768px) {
+	h1 {
+		padding: 1em 0 1.5em;
+		font-size: var(--font-ml);
+	}
+}
+
+h2 {
+	font-size: var(--font-h2);
+	font-weight: bold;
+}
+
+@media ( max-width : 480px) {
+	h2 {
+		font-size: var(--font-ml);
+	}
+}
+
+/* Margin Reset */
+p, h1, h2, .button, .buttonized {
+	margin: 0;
+	font-weight: 500;
+}
+
+h1, h2, .button, .buttonized {
+	font-family: var(--heading-font);
+}
+
+h1, h2 {
+	letter-spacing: 0.2rem;
+}
+
+ul {
+	padding: 0px;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+input[type="checkbox" i] {
+	padding: 0;
+	margin: 0;
+}
+
+input, input[type="checkbox" i], input[type="text"]:focus, input[type="text"]:active,
+	input[type="text"]:checked {
+	border: none;
+	border-radius: 0;
+	outline: none;
+	box-shadow: none;
+	background-color: white;
+}
+
+/* Centered Containers */
+/* Large Desktops */
+.container {
+	max-width: 1440px;
+	margin: 0 auto;
+	height: 100%;
+}
+
+/* Laptop/Tablet */
+@media ( max-width : 1024px) {
+	.container {
+		max-width: 960px;
+		padding: 0 2rem;
+	}
+}
+
+/* Tablet */
+@media ( max-width : 768px) {
+	.container {
+		max-width: 720px;
+		padding: 0 1rem;
+	}
+}
+
+/* Smartphone */
+@media ( max-width : 480px) {
+	.container {
+		max-width: 100%;
+		padding: 0 0.75rem;
+	}
+}
+
+/* Fieldset reset */
+fieldset {
+	border: none;
+	padding: 0;
+	margin: 0;
+	min-inline-size: unset;
+}
+
+legend {
+	all: unset;
+	font-size: var(--font-legend);
+	font-weight: 500;
+}
+
+/* Versteckt Elemente */
+.hidden {
+	display: none !important;
+}
+
+@media ( max-width : 768px) {
+	.hide-on-mobile {
+		display: none;
+	}
+}
+
+.button, .buttonized {
+	display: flex;
+	padding: 1em 4em;
+	justify-content: center;
+	background-color: var(--button-checked);
+	cursor: pointer;
+	font-weight: normal;
+	transition: all 0.2s ease;
+	font-size: var(--font-button);
+	text-align: center;
+	border: none;
+	color: #000;
+}
+
+.button-medium-white {
+	padding: .7em 3.5em;
+	background-color: var(--button-checked);
+	font-weight: normal;
+	font-size: var(--font-button);
+	color: #000;
+}
+
+.pagination-button {
+	padding: 0 1em;
+	background-color: var(--button-checked);
+	font-weight: normal;
+	font-size: var(--font-button);
+	color: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: .25em;
+}
+
+.pagination-wrapper .button {
+	font-size: var(--font-base);
+	background-color: var(--dark-grey);
+}
+
+.pagination-button:first-child, .pagination-button:last-child {
+	padding: 0 .25em;
+	font-size: 2rem;
+	font-size: 2rem;
+	height: 1em;
+	line-height: 1em;
+	padding: 0 0.5em;
+}
+
+.buttonized, .deco {
+	cursor: default;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+.item-row {
+	display: flex;
+	justify-content: center;
+	gap: 1em;
+	flex-direction: row;
+}
+
+.form-row {
+	display: flex;
+	justify-content: flex-start;
+	gap: 1em;
+	flex-direction: row;
+}
+
+.flex-centered {
+	justify-content: center;
+}
+
+.form-group {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	gap: .3em;
+}
+
+.item-group {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+}
+
+.button-centered {
+	justify-content: center;
+}
+
+.info-message {
+	font-weight: bold;
+}

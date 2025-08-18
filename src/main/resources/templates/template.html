@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<th:block
+	th:replace="~{fragments/head :: head ('Ghost Net Fishing - Startseite')}"></th:block>
+
+<body>
+	<th:block th:replace="fragments/header :: header"></th:block>
+
+	<main>
+		<div class="section-wrapper initial-space">
+			<section class="container">
+				<div class="content">
+					<h1>Überschrift</h1>
+					<div class="selection">
+						<button class="button report-button"></button>
+						<button class="button recover-button"></button>
+					</div>
+				</div>
+			</section>
+		</div>
+	</main>
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+</html>

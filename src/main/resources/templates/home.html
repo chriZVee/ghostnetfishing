@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<th:block
+	th:replace="~{fragments/head :: head ('Ghost Net Fishing - Startseite')}"></th:block>
+
+<body>
+	<th:block th:replace="~{fragments/header :: header}"></th:block>
+	<main>
+		<h1 class="home-h1">Ich möchte ein Netz</h1>
+		<div class="section-wrapper relative">
+			<div class="container">
+				<div class="selection">
+					<button class="button report-button">melden</button>
+					<button class="button recover-button">bergen</button>
+				</div>
+			</div>
+			<section class="section">
+				<div class="vertical-text-container deco">
+					<p class="vertical-text deco">choose</p>
+				</div>
+			</section>
+		</div>
+	</main>
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+</body>
+
+</html>

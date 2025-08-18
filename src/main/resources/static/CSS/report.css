@@ -1,0 +1,53 @@
+.report-section .size, .report-section .gps-coordinates, .report-section .name, .report-section .telefon {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	column-gap: 1em;
+}
+
+.net-info, .personal-info {
+	display: flex;
+	flex-direction: column;
+	gap: .5em;
+}
+
+.info-wrapper legend {
+	margin-bottom: .25em;
+}
+
+.report-form input[type="text"] {
+	width: 20em;
+}
+
+.report-form {
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
+}
+
+.report-section {
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
+}
+
+.user-choice {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+.confirmation-message-container {
+	display: flex;
+	justify-content: center;
+}
+
+.info-wrapper {
+	justify-content: center;
+	gap: 5em;
+}
+
+
+/* Ghost Net Card */
+
+
+

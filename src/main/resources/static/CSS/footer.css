@@ -1,0 +1,25 @@
+.footer, footer {
+	background-color: var(--dark-background);
+	height: 80px;
+	flex-shrink: 0;
+}
+
+.footer-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: inherit;
+	justify-content: space-between;
+}
+
+.footer-right {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	height: inherit;
+}
+
+.shea-sepherd-logo-small {
+	width: 13rem;
+}
