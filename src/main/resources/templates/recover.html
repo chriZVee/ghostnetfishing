@@ -1,43 +1,19 @@
 <!DOCTYPE HTML>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragments/head :: head ('Geisternetz bergen')}"></th:block>
+<th:block th:replace="~{fragments/head :: head('Geisternetz bergen')}"></th:block>
 
 <body>
 	<th:block th:replace="~{fragments/header :: header}"></th:block>
-
 	<main>
 		<h1>Netz bergen</h1>
-
-		<div class="section-wrapper">
-			<section class="section reported-nets-section container">
-				<h2>Alle gemeldeten Netze</h2>
-
-				<div class="item-group vertical-space">
-					<th:block th:replace="~{fragments/ghost-net-card :: ghostNetCard}"></th:block>
-					<th:block th:replace="~{fragments/ghost-net-card :: ghostNetCard}"></th:block>
-					<th:block th:replace="~{fragments/ghost-net-card :: ghostNetCard}"></th:block>
-
-					<div class="item-column link-pagination-row">
-						<div class="item-group left-element">
-							<p>→ Übersicht aller Netze</p>
-						</div>
-						<th:block th:replace="~{fragments/pagination :: pagination}"></th:block>
-						<div class="right-element"></div>
-					</div>
-				</div>
-			</section>
-
-
-			<section class="section recovory-nets-section container">
-				<h2>Bergung bevorstehend</h2>
-
+		<div class="section-wrapper relative">
+			<section class="section container">
+				<th:block th:replace="~{fragments/contact-form :: contactForm(formAction='/recover')}"></th:block>
 			</section>
 		</div>
 	</main>
-
 	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
-
 </body>
 
 </html>
