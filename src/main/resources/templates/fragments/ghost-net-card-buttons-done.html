@@ -1,6 +1,4 @@
-<div th:fragment="ghostNetCardButtonsInitial"
-	class="ghost-net-card-buttons item-group"
+<div th:fragment="ghostNetCardButtonsDone(net)" class="ghost-net-card-buttons item-group"
 	xmlns:th="http://thymeleaf.org">
-	<button class="button button-small-white">${geborgen melden}</button>
-	<button class="button button-small-grey">${verschollen melden}</button>
+	<a th:href="@{/report-recovered(id=${net.id})}" class="button card-button">geborgen melden</a>
 </div>

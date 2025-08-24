@@ -1,27 +1,30 @@
-<div th:fragment="ghostNetCard" class="ghost-net-card"
-	xmlns:th="http://www.thymeleaf.org">
-
+<div th:fragment="ghostNetCard(net)" class="ghost-net-card" xmlns:th="http://www.thymeleaf.org">
 
 	<div class="item-group Id">
-		<p>Id</p>
-		<p>#1</p>
+		<p class="">Id</p>
+		<p th:text="'#' + ${net.id}"></p>
 	</div>
 	<div class="item-group gps-coordinates">
 		<p>GPS-Koordinaten</p>
-		<p>-20.1234, 100.5678</p>
+		<p th:text="${net.latitude} + ', ' + ${net.longitude}"></p>
 	</div>
 
 	<div class="item-group size">
 		<p>Größe</p>
-		<p>20m²</p>
+		<p th:text="${net.size}"></p>
 	</div>
-	<div class="item-group">
-		<th:block
-			th:replace="~{fragments/ghost-net-card-buttons :: ghostNetCardButtons}"></th:block>
-	</div>
+
+	<th:block th:fragment="ghostNetCard(net)" class="item-group">
+		<th:block th:if="${net.status.name() == 'GEMELDET'}">
+			<th:block
+				th:replace="~{fragments/ghost-net-card-buttons-initial :: ghostNetCardButtonsInitial(net=${net})}" />
+		</th:block>
+		<th:block th:if="${net.status.name() == 'BERGUNG_BEVORSTEHEND'}">
+			<th:block th:replace="~{fragments/ghost-net-card-buttons-done :: ghostNetCardButtonsDone(net=${net})}" />
+		</th:block>
+		<th:block th:if="${net.status.name() == 'GEBORGEN' or net.status.name() == 'VERSCHOLLEN'}">
+			<th:block th:replace="~{fragments/ghost-net-card-status :: ghostNetCardStatus(net=${net})}" />
+		</th:block>
+	</th:block>
+
 </div>
-
-
-
-
-
