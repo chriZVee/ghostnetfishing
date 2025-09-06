@@ -1,8 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 
-<th:block
-	th:replace="~{fragments/head :: head ('Neues Geisternetz melden')}"></th:block>
+<th:block th:replace="~{fragments/head :: head('Neues Geisternetz melden')}"></th:block>
 
 <body>
 	<th:block th:replace="~{fragments/header :: header}"></th:block>
@@ -10,72 +9,12 @@
 	<main>
 		<h1>Netz melden</h1>
 
-		<div class="section-wrapper">
+		<div class="section-wrapper report">
 			<section class="report-section section container">
-				<form class="report-form" th:action="@{/report}"
-					th:object="${ghostNet}" method="post">
-					<div class="form-row info-wrapper">
-						<fieldset>
-							<legend>Informationen zum Netz</legend>
-
-							<div class="form-group net-info">
-								<div class="gps-coordinates">
-									<label th:for="*{gpsCoordinates}"> GPS-Koordinaten</label> <input
-										type="text" th:field="*{gpsCoordinates}" /> <span
-										class="tooltip-text"></span>
-								</div>
-								<!-- 							tooltip: (Breitengrad,Längengrad -> Beispiel: -->
-								<!-- 							51.5200,53.4555) -->
-
-								<div class="size">
-									<label th:for="*{size}">Größe</label> <input type="text"
-										th:field="*{size}" />
-								</div>
-							</div>
-						</fieldset>
-
-						<fieldset>
-							<legend>Eigene Angaben</legend>
-							<div class="form-group personal-info">
-								<div class="name">
-									<label th:for="*{user.name}">Name</label> <input type="text"
-										th:field="*{user.name}" />
-								</div>
-								<div class="telefon">
-									<label th:for="*{user.telefon}">Telefon</label> <input
-										type="text" th:field="*{user.telefon}" />
-								</div>
-								<div class="anonym-check">
-									<input type="checkbox" th:field="*{user.anonymCheck}" /> <label
-										th:for="*{user.anonymCheck}">Anonym bleiben?</label>
-								</div>
-							</div>
-						</fieldset>
-					</div>
-					<div class="form-row button-centered">
-						<button class="button button-medium-white">melden</button>
-					</div>
-				</form>
-
-				<div class="item-group confirmation-message-container">
-					<span class="confirmation-message hidden">Das Netz wurde
-						erfolgreich gemeldet. Vielen Dank für Ihre Unterstützung!</span>
-				</div>
-
-				<div class="user-choice item-group">
-					<div class="item-row">
-						<span class="info-message">Möchten Sie ein weiteres Netz
-							melden oder ein gemeldetes Netz bergen?</span>
-					</div>
-					<div class="item-row">
-						<button class="button button-medium-white">melden</button>
-						<button class="button button-medium-white">bergen</button>
-					</div>
-				</div>
+				<th:block th:replace="~{fragments/contact-form :: contactForm(formAction='/report')}"></th:block>
 			</section>
 		</div>
 	</main>
-
 	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 </body>
 
