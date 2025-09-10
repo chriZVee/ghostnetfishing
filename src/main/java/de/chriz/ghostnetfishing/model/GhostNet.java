@@ -47,19 +47,30 @@ public class GhostNet {
 		return id;
 	}
 
-	public String getGpsCoordinates() {
-		return gpsCoordinates;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setGpsCoordinates(String gpsCoordinates) {
-		this.gpsCoordinates = gpsCoordinates;
+	public Double getLatitude() {
+		return latitude;
+	}
+	
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+	public Double getLongitude() {
+		return longitude;
 	}
 
-	public float getSize() {
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Float getSize() {
 		return size;
 	}
 
-	public void setSize(float size) {
+	public void setSize(Float size) {
 		this.size = size;
 	}
 
