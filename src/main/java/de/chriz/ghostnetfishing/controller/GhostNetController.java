@@ -86,7 +86,9 @@ public class GhostNetController {
 		boolean activeNetExists = ghostNetRepository.existsByLatitudeAndLongitudeAndStatusIn(latitude, longitude,
 				active);
 
-		if (latitude != null && longitude != null && activeNetExists) {
+		// Schließe Duplikate aus -> Error Page
+		boolean isDuplicate = latitude != null && longitude != null && activeNetExists;
+		if (isDuplicate) {
 			return redirectAfterError("", model);
 		}
 
@@ -101,7 +103,7 @@ public class GhostNetController {
 			@RequestParam(defaultValue = "0") int recoveredLostPageIndex) {
 
 		// Regelt die Zahl der Items der Pagination
-		final int pageSize = 2;
+		final int pageSize = 5;
 		Pageable pageableReported = PageRequest.of(reportedPageIndex, pageSize);
 		Pageable pageableRecovery = PageRequest.of(recoveryPageIndex, pageSize);
 		Pageable pageableRecoveredLost = PageRequest.of(recoveredLostPageIndex, pageSize);
@@ -135,8 +137,6 @@ public class GhostNetController {
 		// Anzeige der Netze für die Map
 		List<GhostNet> reportedNetsList = ghostNetRepository.findByStatus(GhostNetStatus.GEMELDET);
 		model.addAttribute("reportedNetsList", reportedNetsList);
-		
-		System.out.println("Liste hat: " + reportedNetsList.size() + " Einträge");
 
 		return "overview";
 	}

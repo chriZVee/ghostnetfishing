@@ -8,21 +8,17 @@
 
 			<div class="form-group net-info">
 
-				<div class="id" th:if="${formAction != '/report'}"
-					th:classappend="${formAction != '/report' ? 'read-only' : ''}">
-					<label th:for="*{id}">ID</label> <input type="text" th:field="*{id}" readonly /> <span
-						class="tooltip-text"></span>
+				<div class="id" th:if="${formAction != '/report'}" th:classappend="${formAction != '/report' ? 'read-only' : ''}">
+					<label th:for="*{id}">ID</label> <input type="text" th:field="*{id}" readonly /> <span class="tooltip-text"></span>
 				</div>
 				<div class="gps-coordinates">
-					<div class="latitude" th:classappend="${formAction != '/report'} ? 'read-only' : ''">
-						<label th:for="*{latitude}">GPS-Koordinaten</label> <input type="text" th:field="*{latitude}"
-							th:readonly="${formAction != '/report'}" /> <span class="tooltip-text"
-							placeholder="33.6666,99.3333"></span>
-					</div>
 					<div class="longitude" th:classappend="${formAction != '/report'} ? 'read-only' : ''">
-						<label th:for="*{longitude}" class="hidden"></label> <input type="text" th:field="*{longitude}"
-							th:readonly="${formAction != '/report'}" /> <span class="tooltip-text"
-							placeholder="33.6666,99.3333"></span>
+						<label th:for="*{longitude}">GPS-Koordinaten</label> <input type="text" th:field="*{longitude}"
+							th:readonly="${formAction != '/report'}" /> <span class="tooltip-text" placeholder="33.6666,99.3333"></span>
+					</div>
+					<div class="latitude" th:classappend="${formAction != '/report'} ? 'read-only' : ''">
+						<label th:for="*{latitude}" class="hidden"></label> <input type="text" th:field="*{latitude}"
+							th:readonly="${formAction != '/report'}" /> <span class="tooltip-text" placeholder="33.6666,99.3333"></span>
 					</div>
 				</div>
 				<div class="size" th:classappend="${formAction != '/report' ? 'read-only' : ''}">
@@ -37,22 +33,19 @@
 			<div class="form-wrapper">
 				<div class="form-group contact-form-group">
 					<div class="name">
-						<label th:for="*{user.name}">Name (öffentlich sichtbar)</label> <input type="text"
-							th:field="*{user.name}" placeholder="Pseudonym" />
+						<label th:for="*{user.name}">Name (öffentlich sichtbar)</label> <input type="text" th:field="*{user.name}"
+							placeholder="Pseudonym" />
 					</div>
 					<div class="telefon">
-						<label th:for="*{user.telephone}"
-							th:unless="${formAction} == '/report-recovered'">Telefon</label> <input type="text"
-							th:field="*{user.telephone}" th:unless="${formAction} == '/report-recovered'" />
-						<span class="info-message-small" th:if="${formAction == '/report-recovered'}">Die Telefonnummer
-							wird aus Datenschutzgründen
-							den Angaben zur Bergung entnommen.</span>
+						<label th:for="*{user.telephone}" th:unless="${formAction} == '/report-recovered'">Telefon</label> <input
+							type="text" th:field="*{user.telephone}" th:unless="${formAction} == '/report-recovered'" /> <span
+							class="info-message-small" th:if="${formAction == '/report-recovered'}">Die Telefonnummer wird aus
+							Datenschutzgründen den Angaben zur Bergung entnommen.</span>
 					</div>
 
 
 					<div class="anonym-check" th:if="${formAction == '/report'}">
-						<input type="checkbox" th:field="*{user.isAnonym}" /> <label th:for="*{user.isAnonym}">Anonym
-							bleiben?</label>
+						<input type="checkbox" th:field="*{user.isAnonym}" /> <label th:for="*{user.isAnonym}">Anonym bleiben?</label>
 					</div>
 				</div>
 			</div>

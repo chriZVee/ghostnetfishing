@@ -26,6 +26,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	min-width: 11em;
 }
 
 .overview .button-small {
@@ -66,29 +67,36 @@
 
 
 /* Responsive */
-@media ( min-width : 1200px ) {
-	.overview .card-button, .ghost-net-card-status {
+@media (min-width : 1200px) {
+
+	.overview .card-button,
+	.ghost-net-card-status {
 		width: 11em;
 	}
 }
 
 
 /* Ghost Net Map */
-
 .ghost-net-map {
-  position: relative;
-  max-width: 100%;
-  background: #ccc;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
 }
-.ghost-net-map img {
-  display: block;
-  width: 50%;
-  height: auto;
+
+.ghost-net-map svg {
+	display: block;
+	width: 63%;
+	height: auto;
+	aspect-ratio: 2/1;
+	overflow: hidden;
 }
-.map-overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 50%;
-  height: 50%;
-  pointer-events: none;
+
+.ghost-net-map image {
+	width: 100%;
+	height: 100%;
+}
+
+.ghost-net-map circle {
+	r: 25;
+	fill: orange;
 }
