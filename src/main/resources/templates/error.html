@@ -7,10 +7,12 @@
 	<th:block th:replace="~{fragments/header :: header}"></th:block>
 	<main>
 		<h1>Error</h1>
-		<div class="section-wrapper relative ghost-net-map">
-			
+		<div class="section-wrapper relative error">
+
 			<section class="section container">
-			
+				<div class="centered">
+					<p th:text="${errorMessage}"></p>
+				</div>
 			</section>
 		</div>
 	</main>

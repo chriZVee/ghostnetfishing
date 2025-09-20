@@ -17,7 +17,7 @@ public class GhostNet {
 	private Double latitude; // Koordinaten des Netzes
 	@Column(name = "longitude", nullable = false)
 	private Double longitude; // Koordinaten des Netzes
-	private Float size; // Netzgröße in Quadratmetern
+	private Double size; // Netzgröße in Quadratmetern
 	@LastModifiedDate
 	@Column(name = "last_updated")
 	private LocalDateTime lastUpdated;
@@ -33,7 +33,7 @@ public class GhostNet {
 
 	}
 
-	public GhostNet(Long id, Double latitude, Double longitude, float size, GhostNetStatus status, LocalDateTime lastUpdated, User user) {
+	public GhostNet(Long id, Double latitude, Double longitude, Double size, GhostNetStatus status, LocalDateTime lastUpdated, User user) {
 		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -67,11 +67,11 @@ public class GhostNet {
 		this.longitude = longitude;
 	}
 
-	public Float getSize() {
+	public Double getSize() {
 		return size;
 	}
 
-	public void setSize(Float size) {
+	public void setSize(Double size) {
 		this.size = size;
 	}
 

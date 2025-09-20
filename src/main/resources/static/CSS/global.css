@@ -256,6 +256,12 @@ legend {
 	}
 }
 
+.centered {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 
 /* Färbt Elemente auffällig ein */
 .highlighted p {

@@ -1,7 +1,5 @@
 package de.chriz.ghostnetfishing.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +19,12 @@ import de.chriz.ghostnetfishing.model.GhostNetStatus;
 import de.chriz.ghostnetfishing.model.User;
 import de.chriz.ghostnetfishing.model.UserRole;
 import de.chriz.ghostnetfishing.repository.GhostNetRepository;
+import de.chriz.ghostnetfishing.error.DuplicateActiveNetException;
+import de.chriz.ghostnetfishing.error.EmptyFieldException;
 
 @Controller
 public class GhostNetController {
 	private final GhostNetRepository ghostNetRepository;
-	private static final Logger logger = LoggerFactory.getLogger(GhostNetController.class);
 
 	// Konstruktor
 	public GhostNetController(GhostNetRepository ghostNetRepository) {
@@ -49,11 +48,16 @@ public class GhostNetController {
 			ghostNet.setUser(new User());
 		}
 
+		// Setze Nutzerrollen und Netz-Status
 		ghostNet.getUser().setRole(UserRole.MELDENDE_PERSON);
 		ghostNet.setStatus(GhostNetStatus.GEMELDET);
 
+		// Lies den Nutzer aus
 		User user = ghostNet.getUser();
-		if (user.getIsAnonym()) {
+
+		boolean isAnonym = user.getIsAnonym();
+
+		if (isAnonym) {
 			user.setName(null);
 			user.setTelephone(null);
 		} else {
@@ -70,10 +74,22 @@ public class GhostNetController {
 		boolean activeNetExists = ghostNetRepository.existsByLatitudeAndLongitudeAndStatusIn(latitude, longitude,
 				active);
 
+		Double size = ghostNet.getSize();
+		String telephone = ghostNet.getUser().getTelephone();
+		String name = ghostNet.getUser().getName();
+
+		// Verhindere unausgefüllte Felder -> Error Page
+		boolean isNetEmpty = latitude == null || longitude == null || size == null;
+		boolean isUserEmpty = name == null || telephone == null;
+
+		if (isNetEmpty || (isUserEmpty && !isAnonym)) {
+			throw new EmptyFieldException();
+		}
+
 		// Schließe Duplikate aus -> Error Page
 		boolean isDuplicate = latitude != null && longitude != null && activeNetExists;
 		if (isDuplicate) {
-			return redirectAfterError();
+			throw new DuplicateActiveNetException();
 		}
 
 		GhostNet saved = ghostNetRepository.save(ghostNet);
@@ -217,34 +233,25 @@ public class GhostNetController {
 
 		ghostNet.setStatus(GhostNetStatus.GEBORGEN);
 
-		// // Leite zur Errorseite
-		// // oder nicht dem zur Bergung eingetragenen Nutzer entspricht
-		// if (!user.equals(ghostNetRepository.findById(ghostNet.getId()).orElse(null)))
-		// {
-		// return redirectAfterError();
-		// }
-		// // wenn die Telefonnummer nicht dem zur Bergung eingetragenen Nutzers
-		// entspricht
-		// if
-		// (!user.getTelephone().equals(ghostNetRepository.findById(ghostNet.getId()).orElse(null)))
-		// {
-		// return redirectAfterError();
-		// }
-		// // wenn das Netz vorher nicht zur Bergung eingetragen wurde
+		// Leite zur Errorseite
+		// wenn die Bergung eingetragenen Nutzer entspricht
+		if (!user.equals(ghostNetRepository.findById(ghostNet.getId()).orElse(null))) {
+			return "error";
+		}
+		// wenn die Telefonnummer nicht dem zur Bergung eingetragenen Nutzers entspricht
+		if (!user.getTelephone().equals(ghostNetRepository.findById(ghostNet.getId()).orElse(null))) {
+			return "error";
+		}
+		// wenn das Netz vorher nicht zur Bergung eingetragen wurde
 		ghostNetRepository.save(ghostNet);
 		return "redirect:/report-success";
 	}
 
-	// Für die Umleitung auf die spätere Error-Seite
-	private String redirectAfterError() {
-
-		return "redirect:/error";
-	}
-
-	public String showError(RedirectAttributes ra, String error) {
-		String errorMessage = "Leider ist ein Fehler aufgetreten." + error;
-		ra.addFlashAttribute("errorMessage", errorMessage);
-		return "error";
+	public boolean isValidNetValue(Double netValue) {
+		String stringValue = String.valueOf(netValue);
+		String pattern = "^-?\\d+([.,]\\d+)?$";
+		boolean isValidNetValue = stringValue.matches(pattern);
+		return isValidNetValue;
 	}
 
 }

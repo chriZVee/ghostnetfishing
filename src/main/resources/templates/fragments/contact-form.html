@@ -14,11 +14,11 @@
 				<div class="gps-coordinates">
 					<div class="longitude" th:classappend="${formAction != '/report'} ? 'read-only' : ''">
 						<label th:for="*{longitude}">GPS-Koordinaten</label> <input type="text" th:field="*{longitude}"
-							th:readonly="${formAction != '/report'}" /> <span class="tooltip-text" placeholder="33.6666,99.3333"></span>
+							th:readonly="${formAction != '/report'}" placeholder="0.000000" />
 					</div>
 					<div class="latitude" th:classappend="${formAction != '/report'} ? 'read-only' : ''">
 						<label th:for="*{latitude}" class="hidden"></label> <input type="text" th:field="*{latitude}"
-							th:readonly="${formAction != '/report'}" /> <span class="tooltip-text" placeholder="33.6666,99.3333"></span>
+							th:readonly="${formAction != '/report'}" placeholder="0.000000" />
 					</div>
 				</div>
 				<div class="size" th:classappend="${formAction != '/report' ? 'read-only' : ''}">
@@ -32,15 +32,14 @@
 			<legend>Eigene Angaben</legend>
 			<div class="form-wrapper">
 				<div class="form-group contact-form-group">
-					<div class="name">
-						<label th:for="*{user.name}">Name (öffentlich sichtbar)</label> <input type="text" th:field="*{user.name}"
-							placeholder="Pseudonym" />
+					<div class="name" th:unless="${formAction == '/report-recovered'}">
+						<label th:for="*{user.name}">Name</label> <input type="text" th:field="*{user.name}" placeholder="" />
 					</div>
 					<div class="telefon">
 						<label th:for="*{user.telephone}" th:unless="${formAction} == '/report-recovered'">Telefon</label> <input
 							type="text" th:field="*{user.telephone}" th:unless="${formAction} == '/report-recovered'" /> <span
-							class="info-message-small" th:if="${formAction == '/report-recovered'}">Die Telefonnummer wird aus
-							Datenschutzgründen den Angaben zur Bergung entnommen.</span>
+							class="info-message-small" th:if="${formAction == '/report-recovered'}">Name und Telefonnummer werden aus
+							Datenschutzgründen nicht angezeigt und aus den Bergungsdaten übernommen.</span>
 					</div>
 
 
