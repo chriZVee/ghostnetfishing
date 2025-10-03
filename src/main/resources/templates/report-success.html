@@ -3,7 +3,7 @@
 	lang="de"
 	xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="~{fragments/head :: head('Daten erfolgreich übermittelt')}"></th:block>
+<th:block th:replace="~{fragments/head :: head('Geisternetz erfolgreich gemeldet')}"></th:block>
 
 <th:block th:replace="~{fragments/header :: header}"></th:block>
 
@@ -40,10 +40,16 @@
 						<p th:text="${net.lastUpdated}"></p>
 					</div>
 
-					<div class=item-row>
-						<th:block
-							th:replace="~{fragments/pagination :: pagination(page = ${reportSuccessPage}, basePath = ${reportSuccessPath})}">
-						</th:block>
+					<div class="pagination-link">
+						<div class="left">
+							<a th:href="@{/}"><span class="home-link">→ zurück zum Start</span></a>
+						</div>
+						<div class="middle">
+							<th:block
+								th:replace="~{fragments/pagination :: pagination(page = ${reportSuccessPage}, basePath = ${reportSuccessPath})}">
+							</th:block>
+						</div>
+						<div class="right"></div>
 					</div>
 				</div>
 			</section>

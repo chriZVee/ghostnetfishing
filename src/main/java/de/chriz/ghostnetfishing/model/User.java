@@ -1,6 +1,10 @@
 package de.chriz.ghostnetfishing.model;
 
+import de.chriz.ghostnetfishing.validation.RecoverChecks;
+import de.chriz.ghostnetfishing.validation.ReportChecks;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class User {
@@ -8,12 +12,24 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotBlank(groups = RecoverChecks.class, message = "Name erforderlich")
 	@Column(nullable = true)
 	private String name; // Selbstgewählter Name des Nutzers
-	@Column(nullable = true)
-	private Boolean anonym; // Wert für Checkbox, für anonyme Reports
+
+	@NotBlank(groups = RecoverChecks.class, message = "Telefon erforderlich")
 	@Column(nullable = true)
 	private String telephone; // Telefonnummer des Nutzers
+
+	@Column(nullable = false)
+	private boolean anonym; // Wert für Checkbox, für anonyme Reports
+	
+	// Report-Validation
+	@AssertTrue(groups = ReportChecks.class, message = "Bitte Name und Telefon angeben")
+	public boolean isContactDetailsValid() {
+		return anonym || (name != null && !name.isBlank() || telephone != null && !telephone.isBlank());
+	}
+
 	@Enumerated(EnumType.STRING)
 	private UserRole role; // Rolle des Nutzers
 
@@ -21,7 +37,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String name, Boolean anonym, String telephone, UserRole role) {
+	public User(String name, boolean anonym, String telephone, UserRole role) {
 		this.name = name;
 		this.anonym = anonym;
 		this.telephone = telephone;
@@ -37,11 +53,11 @@ public class User {
 		this.name = name;
 	}
 
-	public Boolean getAnonym() {
+	public boolean getAnonym() {
 		return anonym;
 	}
 
-	public void setAnonym(Boolean anonym) {
+	public void setAnonym(boolean anonym) {
 		this.anonym = anonym;
 	}
 

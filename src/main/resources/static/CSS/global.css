@@ -28,12 +28,12 @@
 	--font-h1: 2.1rem;
 	--font-button: 1.3rem;
 	--font-legend: 1rem;
-	line-height: 1.5;
-	width: auto;
 	--global-font: "Roboto", "Segoe UI", "Helvetica Neue", sans-serif;
 	--font-small: 0.8rem;
 	--font-xs: 0.7rem;
 	--heading-font: "Bebas Neue", "Helvetica Neue";
+	line-height: 1.5;
+	width: auto;
 }
 
 * {
@@ -321,6 +321,24 @@ legend {
 	flex-direction: row;
 }
 
+
+.errorMessage {
+    font-size: var(--font-small);
+    color: var(--warning);
+	margin-top: -.5em;
+}
+
+/* Form in general */
+legend {
+	margin-bottom: 1em;
+}
+
+.form-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: .5em;
+}
+
 .form-row {
 	display: flex;
 	justify-content: flex-start;
@@ -336,7 +354,7 @@ legend {
 	display: flex;
 	justify-content: flex-start;
 	flex-direction: column;
-	gap: .3em;
+	gap: .5em;
 }
 
 .item-group {
@@ -358,14 +376,9 @@ legend {
 }
 
 /* Report Form & Contact Form */
-.report-form input[type="text"] {
-	width: 20em;
-}
-
 .report-form input#latitude,
 .report-form input#longitude {
-	width: 9.65em;
-	line-height: unset;
+	max-width: 11.68em;
 }
 
 .report-form {
@@ -382,16 +395,56 @@ legend {
 .report-form .name,
 .report-form .telefon {
 	display: grid;
-	grid-template-columns: 1fr auto;
-	column-gap: 1em;
 }
 
-.report-form .latitude {
-	column-gap: 0em;
+.report-form .name,
+.report-form .telefon {
+	grid-template-columns: .15fr .68fr;
+
+}
+
+@media (max-width: 1440px) {
+
+	.report-form .name,
+	.report-form .telefon {
+		grid-template-columns: .35fr 1.5fr;
+	}
+}
+
+@media (max-width: 1200px) {
+
+	.report-form .name,
+	.report-form .telefon {
+		grid-template-columns: .5fr auto;
+
+	}
+}
+
+@media (max-width: 1024px) {
+
+	.report-form .name,
+	.report-form .telefon {
+		grid-template-columns: 1fr auto;
+
+	}
 }
 
 .report-form .gps-coordinates {
+	grid-template-columns: 1fr 1fr 1fr;
 	column-gap: .5em;
+}
+
+.report-form .id,
+.report-form .size {
+	grid-template-columns: .5fr auto;
+}
+
+@media (max-width: 1440px) {
+
+	.report-form .id,
+	.report-form .size {
+		grid-template-columns: .5fr 1.5fr;
+	}
 }
 
 .report-form input {
@@ -417,11 +470,16 @@ legend {
 }
 
 /* Pagination */
-.link-pagination-row {
+.pagination-link {
 	display: grid;
 	grid-template-columns: 1fr auto 1fr;
 	align-items: center;
 	margin-top: .5em;
+}
+
+.pagination-link .home-link {
+	font-weight: 400;
+	color: #000;
 }
 
 .pagination-button {

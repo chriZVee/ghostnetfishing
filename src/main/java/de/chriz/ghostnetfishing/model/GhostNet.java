@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import de.chriz.ghostnetfishing.validation.ReportChecks;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -13,14 +17,24 @@ public class GhostNet {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; // ID des Netzes
+
+	@NotNull(groups = ReportChecks.class, message = "Bitte Breitengrad angeben")
 	@Column(name = "latitude", nullable = false) // Verbindung zur Datenbank-Spalte
 	private Double latitude; // Koordinaten des Netzes
+
+	@NotNull(groups = ReportChecks.class, message = "Bitte Längengrad angeben")
 	@Column(name = "longitude", nullable = false)
 	private Double longitude; // Koordinaten des Netzes
+
+	@NotNull(groups = ReportChecks.class, message = "Bitte Netzgröße angeben")
+	@Column(name = "size", nullable = false)
 	private Double size; // Netzgröße in Quadratmetern
+
 	@LastModifiedDate
 	@Column(name = "last_updated")
 	private LocalDateTime lastUpdated;
+
+	@Valid
 	@ManyToOne(cascade = CascadeType.PERSIST) // Wenn ein Netz gelöscht wird, bleibt der Nutzer bestehen
 	@JoinColumn(name = "user_id")
 	private User user; // Nutzer Objekt, beinhaltet alle nutzerbezogenen Variablen
@@ -33,7 +47,8 @@ public class GhostNet {
 
 	}
 
-	public GhostNet(Long id, Double latitude, Double longitude, Double size, GhostNetStatus status, LocalDateTime lastUpdated, User user) {
+	public GhostNet(Long id, Double latitude, Double longitude, Double size, GhostNetStatus status,
+			LocalDateTime lastUpdated, User user) {
 		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -55,10 +70,11 @@ public class GhostNet {
 	public Double getLatitude() {
 		return latitude;
 	}
-	
+
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
+
 	public Double getLongitude() {
 		return longitude;
 	}

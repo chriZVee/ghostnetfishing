@@ -2,7 +2,6 @@
 .report .contact-data {
 	display: flex;
 	flex-direction: column;
-	gap: .5em;
 }
 
 .report .info-wrapper legend {

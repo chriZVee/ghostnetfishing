@@ -8,9 +8,13 @@
 		<th:block th:replace="~{fragments/ghost-net-card :: ghostNetCard(net=${net})}"></th:block>
 	</th:block>
 
-	<div class="item-group link-pagination-row">
-		<div class="item-group left-element"></div>
-		<th:block th:replace="~{fragments/pagination :: pagination(page=${page}, basePath=${basePath})}"></th:block>
-		<div class="right-element"></div>
+	<div class="pagination-link">
+		<div class="left">
+			<a th:href="@{/}"><span class="home-link">→ zurück zum Start</span></a>
+		</div>
+		<div class="middle">
+			<th:block th:replace="~{fragments/pagination :: pagination(page=${page}, basePath=${basePath})}"></th:block>
+		</div>
+		<div class="right"></div>
 	</div>
 </div>

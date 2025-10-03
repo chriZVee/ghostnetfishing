@@ -5,13 +5,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.chriz.ghostnetfishing.model.GhostNet;
@@ -19,8 +21,8 @@ import de.chriz.ghostnetfishing.model.GhostNetStatus;
 import de.chriz.ghostnetfishing.model.User;
 import de.chriz.ghostnetfishing.model.UserRole;
 import de.chriz.ghostnetfishing.repository.GhostNetRepository;
-import de.chriz.ghostnetfishing.error.DuplicateActiveNetException;
-import de.chriz.ghostnetfishing.error.EmptyFieldException;
+import de.chriz.ghostnetfishing.validation.ReportChecks;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Controller
 public class GhostNetController {
@@ -38,15 +40,34 @@ public class GhostNetController {
 		ghostNet.setUser(new User());
 		model.addAttribute("ghostNet", ghostNet);
 		model.addAttribute("formAction", "/report");
-		model.addAttribute("pageTitle", "Geisternetz melden");
 		return "report";
 	}
 
 	// Sendet die Daten des gemeldeten Netzes an die View
 	@PostMapping("/report")
-	public String submitReport(@ModelAttribute GhostNet ghostNet, Model model, RedirectAttributes ra) {
+	public String submitReport(@Validated(ReportChecks.class) @ModelAttribute GhostNet ghostNet, BindingResult br,
+			Model model, RedirectAttributes ra) {
+
+		// Weitergabe an die View
+		model.addAttribute("formAction", "/report");
+
+		// Stabilität: Falls kein Nutzer besteht, wird einer angelegt
 		if (ghostNet.getUser() == null) {
 			ghostNet.setUser(new User());
+		}
+
+		// Validierung
+		if (br.hasErrors()) {
+			return "report";
+		}
+
+		List<GhostNetStatus> activeList = List.of(GhostNetStatus.GEMELDET, GhostNetStatus.BERGUNG_BEVORSTEHEND);
+		boolean duplicate = ghostNetRepository.existsByLatitudeAndLongitudeAndStatusIn(ghostNet.getLatitude(),
+				ghostNet.getLongitude(), activeList);
+
+		if (duplicate) {
+			br.reject(null, "Für diese Koordinaten wurde bereits ein Geisternetz gemeldet");
+			return "report";
 		}
 
 		// Setze Nutzerrollen und Netz-Status
@@ -56,8 +77,8 @@ public class GhostNetController {
 		// Lies den Nutzer aus
 		User user = ghostNet.getUser();
 
-		Boolean anonym = user.getAnonym();
-
+		// Anonymitätscheck
+		boolean anonym = user.getAnonym();
 		if (anonym) {
 			user.setName(null);
 			user.setTelephone(null);
@@ -68,37 +89,12 @@ public class GhostNetController {
 				user.setTelephone(null);
 		}
 
-		// Error-Handling
-		Double latitude = ghostNet.getLatitude();
-		Double longitude = ghostNet.getLongitude();
-		List<GhostNetStatus> active = List.of(GhostNetStatus.GEMELDET, GhostNetStatus.BERGUNG_BEVORSTEHEND);
-		boolean activeNetExists = ghostNetRepository.existsByLatitudeAndLongitudeAndStatusIn(latitude, longitude,
-				active);
-
-		Double size = ghostNet.getSize();
-		String telephone = ghostNet.getUser().getTelephone();
-		String name = ghostNet.getUser().getName();
-
-		// Verhindere unausgefüllte Felder -> Error Page
-		boolean isNetEmpty = latitude == null || longitude == null || size == null;
-		boolean isUserEmpty = name == null || telephone == null;
-
-		if (isNetEmpty || (isUserEmpty && !anonym)) {
-			throw new EmptyFieldException();
-		}
-
-		// Schließe Duplikate aus -> Error Page
-		boolean isDuplicate = latitude != null && longitude != null && activeNetExists;
-		if (isDuplicate) {
-			throw new DuplicateActiveNetException();
-		}
-
+		// Speichere das Netz ins Repository
 		GhostNet saved = ghostNetRepository.save(ghostNet);
 
 		// Gib die ID für das gemeldete Netz weiter
 		ra.addFlashAttribute("reportedNetId", saved.getId());
 
-		ra.addFlashAttribute("formAction", "/report");
 		return "redirect:/report-success";
 	}
 
@@ -106,7 +102,7 @@ public class GhostNetController {
 	@GetMapping("/report-success")
 	public String showSuccess(Model model, @RequestParam(defaultValue = "0") int reportSuccessPageIndex) {
 		// Regelt die Zahl der Items der Pagination
-		Pageable pageable = PageRequest.of(reportSuccessPageIndex, 10);
+		Pageable pageable = PageRequest.of(reportSuccessPageIndex, 8);
 		Page<GhostNet> reportSuccessPage = ghostNetRepository.findAllByOrderByLastUpdatedDesc(pageable);
 
 		model.addAttribute("reportSuccessPage", reportSuccessPage);
@@ -116,7 +112,6 @@ public class GhostNetController {
 		final String basePath = "/report-success";
 		model.addAttribute("reportSuccessPath", basePath + "?reportSuccessPageIndex=");
 
-		model.addAttribute("pageTitle", "Geisternetz erfolgreich gemeldet");
 		return "report-success";
 	}
 
@@ -165,19 +160,18 @@ public class GhostNetController {
 
 	@GetMapping("/recover")
 	public String showRecover(@RequestParam Long id, Model model) {
-		GhostNet ghostNet = ghostNetRepository.findById(id).orElseThrow();
+		GhostNet ghostNet = ghostNetRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
 		// Erstelle einen neuen Nutzer, für leere Eingabefelder
 		ghostNet.setUser(new User());
 
 		model.addAttribute("ghostNet", ghostNet);
 		model.addAttribute("formAction", "/recover");
-		model.addAttribute("pageTitle", "Geisternetz bergen");
 		return "recover";
 	}
 
 	@PostMapping("/recover")
 	public String submitRecover(@ModelAttribute GhostNet ghostNet, @RequestParam Long id, RedirectAttributes ra) {
-		GhostNet updatedNet = ghostNetRepository.findById(id).orElseThrow();
+		GhostNet updatedNet = ghostNetRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
 
 		// Errohandling - Falls kein User vorhanden ist
 		if (updatedNet.getUser() == null) {
@@ -200,7 +194,7 @@ public class GhostNetController {
 
 	@GetMapping("/report-recovered")
 	public String showRecovered(@RequestParam Long id, Model model) {
-		GhostNet ghostNet = ghostNetRepository.findById(id).orElseThrow();
+		GhostNet ghostNet = ghostNetRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
 
 		// Stabilität - Falls kein User vorhanden ist, wird ein neuer erstellt
 		if (ghostNet.getUser() == null) {
@@ -210,13 +204,12 @@ public class GhostNetController {
 		model.addAttribute("ghostNet", ghostNet);
 		// Gib die Seitenkennung weiter
 		model.addAttribute("formAction", "/report-recovered");
-		model.addAttribute("pageTitle", "Geisternetz geborgen melden");
 		return "report-recovered";
 	}
 
 	@PostMapping("/report-recovered")
 	public String submitRecovered(@RequestParam Long id, @ModelAttribute GhostNet ghostNet, RedirectAttributes ra) {
-		ghostNet = ghostNetRepository.findById(id).orElseThrow();
+		ghostNet = ghostNetRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
 		// Sicherheitsprüfung des Nutzers
 		User user = ghostNet.getUser();
 		// wenn kein Nutzer vorhanden ist, erstelle einen neuen Nutzer
@@ -235,10 +228,4 @@ public class GhostNetController {
 		return "redirect:/report-success";
 	}
 
-	public boolean isValidNetValue(Double netValue) {
-		String stringValue = String.valueOf(netValue);
-		String pattern = "^-?\\d+([.,]\\d+)?$";
-		boolean isValidNetValue = stringValue.matches(pattern);
-		return isValidNetValue;
-	}
 }

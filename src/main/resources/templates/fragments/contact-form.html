@@ -12,7 +12,6 @@
 			<legend>Informationen zum Netz</legend>
 
 			<div class="form-group net-info">
-
 				<div
 					class="id"
 					th:if="${formAction != '/report'}"
@@ -20,30 +19,54 @@
 					<label th:for="*{id}">ID</label> <input
 						type="text"
 						th:field="*{id}"
-						readonly /> <span class="tooltip-text"></span>
+						readonly />
 				</div>
+
 				<div class="gps-coordinates">
-					<div
-						class="longitude"
-						th:classappend="${formAction != '/report' ? 'read-only' : ''}">
-						<label th:for="*{longitude}">GPS-Koordinaten</label> <input
-							type="text"
-							th:field="*{longitude}"
-							th:readonly="${formAction != '/report'}"
-							placeholder="0.000000" />
-					</div>
+					<span>GPS-Koordinaten</span>
 					<div
 						class="latitude"
 						th:classappend="${formAction != '/report' ? 'read-only' : ''}">
 						<label
 							th:for="*{latitude}"
-							class="hidden"></label> <input
+							class="hidden"></label><input
 							type="text"
 							th:field="*{latitude}"
 							th:readonly="${formAction != '/report'}"
 							placeholder="0.000000" />
 					</div>
+
+					<div
+						class="longitude"
+						th:classappend="${formAction != '/report' ? 'read-only' : ''}">
+						<label
+							th:for="*{longitude}"
+							class="hidden"></label> <input
+							type="text"
+							th:field="*{longitude}"
+							th:readonly="${formAction != '/report'}"
+							placeholder="0.000000" />
+					</div>
 				</div>
+
+				<div
+					class="errorMessages"
+					th:if="${#fields.hasErrors('latitude')} or ${#fields.hasErrors('longitude')}">
+					<div
+						class="errorMessage"
+						th:if="${#fields.hasErrors('latitude')}"
+						th:errors="*{latitude}"></div>
+					<div
+						class="errorMessage"
+						th:if="${#fields.hasErrors('longitude')}"
+						th:errors="*{longitude}"></div>
+				</div>
+				<div
+					class="errorMessage"
+					th:if="${#fields.hasGlobalErrors()}"
+					th:each="error : ${#fields.globalErrors()}"
+					th:text="${error}"></div>
+
 				<div
 					class="size"
 					th:classappend="${formAction != '/report' ? 'read-only' : ''}">
@@ -52,7 +75,13 @@
 						th:field="*{size}"
 						th:readonly="${formAction != '/report'}"
 						placeholder="qm" />
+
 				</div>
+				<div
+					class="errorMessage"
+					th:if="${#fields.hasErrors('size')}"
+					th:errors="*{size}"></div>
+
 			</div>
 		</fieldset>
 
@@ -75,11 +104,16 @@
 							type="text"
 							th:field="*{user.telephone}" />
 					</div>
+
 					<span
 						class="info-message-small"
 						th:if="${formAction == '/report-recovered'}">Bitte die Telefonnummer vor dem Absenden erneut prüfen.</span>
 				</div>
 
+				<div
+					class="errorMessage"
+					th:if="${#fields.hasErrors('user.contactDetailsValid')}"
+					th:errors="*{user.contactDetailsValid}"></div>
 
 				<div
 					class="anonym-check"
@@ -89,6 +123,8 @@
 						th:field="*{user.anonym}" /> <label th:for="*{user.anonym}">Anonym bleiben?</label>
 				</div>
 			</div>
+
+
 
 		</fieldset>
 	</div>
