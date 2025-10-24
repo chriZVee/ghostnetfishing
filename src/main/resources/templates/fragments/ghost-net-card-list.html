@@ -1,7 +1,7 @@
 <div
 	th:fragment="ghostNetCardList(netList, page, basePath)"
-	class="ghost-net-card-list reported-net-list item-group vertical-space"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	class="ghost-net-card-list reported-net-list item-group vertical-space">
 
 	<p th:if="${netList == null or #lists.isEmpty(netList)}">Kein Eintrag vorhanden.</p>
 	<th:block th:each="net : ${netList}">
