@@ -6,15 +6,20 @@
 }
 
 .header.container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: center;
-    height: 120px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-content: center;
+	height: 120px;
 }
 
 
-.ghost-net-fishing-logo, .shea-sepherd-logo {
-	height: 50px;
+.ghost-net-fishing-logo,
+.shea-sepherd-logo {
+	height: 2.8rem;
+}
+
+.logo-wrapper .ghost-net-fishing-logo {
+	height: 3rem;
 }

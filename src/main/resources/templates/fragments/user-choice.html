@@ -1,0 +1,15 @@
+<div
+	th:fragment="userChoice"
+	class="user-choice item-group"
+	xmlns:th="http://www.thymeleaf.org">
+	<div class="item-row">
+		<span class="info-message">Weiteres Netz</span>
+	</div>
+	<div class="item-row">
+		<a
+			class="button button-medium-white"
+			th:href="@{report}">melden</a> <a
+			class="button button-medium-white"
+			th:href="@{overview}">bergen</a>
+	</div>
+</div>

@@ -1,6 +1,10 @@
 package de.chriz.ghostnetfishing.model;
 
+import de.chriz.ghostnetfishing.validation.RecoverChecks;
+import de.chriz.ghostnetfishing.validation.ReportChecks;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class User {
@@ -8,22 +12,35 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(nullable = false)
+
+	@NotBlank(groups = RecoverChecks.class, message = "Name erforderlich")
+	@Column(nullable = true)
 	private String name; // Selbstgewählter Name des Nutzers
-	private boolean anonymCheck; // Wert für Checkbox, für anonyme Reports
-	private String telefon; // Telefonnummer des Nutzers
+
+	@NotBlank(groups = RecoverChecks.class, message = "Telefon erforderlich")
+	@Column(nullable = true)
+	private String telephone; // Telefonnummer des Nutzers
+
+	@Column(nullable = false)
+	private boolean anonym; // Wert für Checkbox, für anonyme Reports
+	
+	// Report-Validation
+	@AssertTrue(groups = ReportChecks.class, message = "Bitte Name und Telefon angeben")
+	public boolean isContactDetailsValid() {
+		return anonym || (name != null && !name.isBlank() || telephone != null && !telephone.isBlank());
+	}
+
 	@Enumerated(EnumType.STRING)
-	private UserRole role;
+	private UserRole role; // Rolle des Nutzers
 
 	// Konstruktoren
 	public User() {
-
 	}
 
-	public User(String name, boolean anonymCheck, String telefon, UserRole role) {
+	public User(String name, boolean anonym, String telephone, UserRole role) {
 		this.name = name;
-		this.anonymCheck = anonymCheck;
-		this.telefon = telefon;
+		this.anonym = anonym;
+		this.telephone = telephone;
 		this.role = role;
 	}
 
@@ -36,20 +53,20 @@ public class User {
 		this.name = name;
 	}
 
-	public boolean getAnonymCheck() {
-		return anonymCheck;
+	public boolean getAnonym() {
+		return anonym;
 	}
 
-	public void setAnonymCheck(boolean anonymCheck) {
-		this.anonymCheck = anonymCheck;
+	public void setAnonym(boolean anonym) {
+		this.anonym = anonym;
 	}
 
-	public String getTelefon() {
-		return telefon;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setTelefon(String telefon) {
-		this.telefon = telefon;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public UserRole getRole() {

@@ -1,11 +1,130 @@
-<form class="contact-form" th:fragment="contactForm"
+<form
+	th:object="${ghostNet}"
+	th:fragment="contactForm"
+	th:action="@{${formAction}(id=${ghostNet.id})}"
+	class="report-form contact-form gapped"
+	method="post"
 	xmlns:th="http://www.thymeleaf.org">
-	<fieldset>
-		<legend>Bitte geben Sie Ihre Kontaktdaten an</legend>
-		<div class="form-row form-name">
-			<label for="name">name</label> <input type="text"></input> <label
-				for="name">Telefon</label> <input type="text"></input>
-		</div>
-		<button type="submit" class="button button-medium-white">bestätigen</button>
-	</fieldset>
+
+	<div class="form-row info-wrapper">
+		<fieldset>
+			<legend>Informationen zum Netz</legend>
+
+			<div class="form-group net-info">
+				<div
+					class="id"
+					th:if="${formAction != '/report'}"
+					th:classappend="${formAction != '/report' ? 'read-only' : ''}">
+					<label th:for="*{id}">ID</label> <input
+						type="text"
+						th:field="*{id}"
+						readonly />
+				</div>
+
+				<div class="gps-coordinates">
+					<span>GPS-Koordinaten</span>
+					<div
+						class="latitude"
+						th:classappend="${formAction != '/report' ? 'read-only' : ''}">
+						<label
+							th:for="*{latitude}"
+							class="hidden"></label><input
+							type="text"
+							th:field="*{latitude}"
+							th:readonly="${formAction != '/report'}"
+							placeholder="0.000000" />
+					</div>
+
+					<div
+						class="longitude"
+						th:classappend="${formAction != '/report' ? 'read-only' : ''}">
+						<label
+							th:for="*{longitude}"
+							class="hidden"></label> <input
+							type="text"
+							th:field="*{longitude}"
+							th:readonly="${formAction != '/report'}"
+							placeholder="0.000000" />
+					</div>
+				</div>
+
+				<div
+					class="errorMessages"
+					th:if="${#fields.hasErrors('latitude')} or ${#fields.hasErrors('longitude')}">
+					<div
+						class="errorMessage"
+						th:if="${#fields.hasErrors('latitude')}"
+						th:errors="*{latitude}"></div>
+					<div
+						class="errorMessage"
+						th:if="${#fields.hasErrors('longitude')}"
+						th:errors="*{longitude}"></div>
+				</div>
+				<div
+					class="errorMessage"
+					th:if="${#fields.hasGlobalErrors()}"
+					th:each="error : ${#fields.globalErrors()}"
+					th:text="${error}"></div>
+
+				<div
+					class="size"
+					th:classappend="${formAction != '/report' ? 'read-only' : ''}">
+					<label th:for="*{size}">Größe</label> <input
+						type="text"
+						th:field="*{size}"
+						th:readonly="${formAction != '/report'}"
+						placeholder="qm" />
+				</div>
+				<div
+					class="errorMessage"
+					th:if="${#fields.hasErrors('size')}"
+					th:errors="*{size}"></div>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>Eigene Angaben</legend>
+			<div class="form-wrapper">
+				<div class="form-group contact-form-group">
+					<div
+						class="name"
+						th:classappend="${formAction == '/report-recovered' ? 'read-only' : ''}">
+						<label th:for="*{user.name}">Name</label> <input
+							type="text"
+							th:field="*{user.name}"
+							th:readonly="${formAction == '/report-recovered'}"
+							placeholder="" />
+					</div>
+
+					<div class="telefon">
+						<label th:for="*{user.telephone}">Telefon</label> <input
+							type="text"
+							th:field="*{user.telephone}" />
+					</div>
+
+					<span
+						class="info-message-small"
+						th:if="${formAction == '/report-recovered'}">Bitte die Telefonnummer vor dem Absenden erneut prüfen.</span>
+				</div>
+
+				<div
+					class="errorMessage"
+					th:if="${#fields.hasErrors('user.contactDetailsValid')}"
+					th:errors="*{user.contactDetailsValid}"></div>
+
+				<div
+					class="anonym-check"
+					th:if="${formAction == '/report'}">
+					<input
+						type="checkbox"
+						th:field="*{user.anonym}" /> <label th:for="*{user.anonym}">Anonym bleiben?</label>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="form-row button-centered">
+		<button
+			type="submit"
+			class="button button-medium-white button-small">senden</button>
+	</div>
 </form>

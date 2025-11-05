@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html
+	lang="de"
+	xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{fragments/head :: head('Geisternetz erfolgreich gemeldet')}"></th:block>
+
+<th:block th:replace="~{fragments/header :: header}"></th:block>
+
+<body>
+	<main>
+		<h1>Erfolgreich übermittelt</h1>
+
+		<div class="section-wrapper report-success">
+			<section class="section container gapped">
+
+				<div class="item-group confirmation-message-container">
+					<p class="confirmation-message">Ihre Daten wurden übermittelt. Vielen Dank für Ihre Unterstützung!</p>
+				</div>
+
+				<div class="table success-table">
+					<div class="table-head table-row">
+						<p>ID</p>
+						<p>Latitude</p>
+						<p>Longitude</p>
+						<p>Größe</p>
+						<p>Status</p>
+						<p>zuletzt geändert</p>
+					</div>
+
+					<div
+						class="table-data table-row"
+						th:each="net : ${reportSuccessNets}"
+						th:classappend="${net.id.equals(reportedNetId) || net.id.equals(recoveryNetId) || net.id.equals(recoveredNetId)}? ' highlighted' : ''">
+						<p th:text="'#' + ${net.id}"></p>
+						<p th:text="${net.latitude}"></p>
+						<p th:text="${net.longitude}"></p>
+						<p th:text="${net.size}"></p>
+						<p th:text="${net.status}"></p>
+						<p th:text="${net.lastUpdated}"></p>
+					</div>
+
+					<div class="pagination-link">
+						<div class="left">
+							<a th:href="@{/}"><span class="home-link">→ zurück zum Start</span></a>
+						</div>
+						<div class="middle">
+							<th:block
+								th:replace="~{fragments/pagination :: pagination(page = ${reportSuccessPage}, basePath = ${reportSuccessPath})}">
+							</th:block>
+						</div>
+						<div class="right"></div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</main>
+</body>
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+</html>

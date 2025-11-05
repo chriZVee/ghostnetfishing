@@ -1,5 +1,31 @@
-<div th:fragment="pagination" class="item-row pagination-wrapper centered-element" xmlns:th="http://www.thymeleaf.org">
-	<button type="submit" class="button pagination-button">‹</button>
-	<button type="submit" class="button pagination-button">1</button>
-	<button type="submit" class="button pagination-button">›</button>
+<div th:fragment="pagination(page, basePath)" 
+	class="item-row pagination-wrapper centered-element"
+	xmlns:th="http://www.thymeleaf.org" 
+	th:if="${page != null and page.totalPages > 1}">
+
+	<a class="button pagination-button pagination-arrow" 
+		th:if="${page.hasPrevious()}" 
+		th:href="@{|${basePath}${page.number - 1}|}"
+		aria-label="Vorige Seite">‹
+	</a>
+
+	<span th:each="pageIndex : ${#numbers.sequence(0, page.totalPages - 1)}">
+		<a class="button pagination-button" 
+			th:if="${pageIndex != page.number}" 
+			th:text="${pageIndex+1}"
+			th:href="@{|${basePath}${pageIndex}|}" 
+			th:attr="aria-label=${'Seite ' + (pageIndex + 1)}">
+		</a>
+		<a class="button pagination-button" 
+			th:classappend="${pageIndex == page.number ? 'highlighted':''}" 
+			th:if="${pageIndex == page.number}" 
+			th:text="${pageIndex+1}">
+		</a>
+	</span>
+
+	<a class="button pagination-button pagination-arrow" 
+		th:if="${page.hasNext()}" 
+		th:href="@{|${basePath}${page.number + 1}|}"
+		aria-label="Nächste Seite">›
+	</a>
 </div>

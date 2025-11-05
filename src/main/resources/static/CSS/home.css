@@ -1,26 +1,41 @@
-.selection {
+.home .selection {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	gap: 1.5em;
+	margin-top: 1em;
 }
 
-.vertical-text-container {
+.home .vertical-text-container {
+	font-family: var(--heading-font);
 	position: absolute;
 	left: 0;
 	top: -65%;
 }
 
-.vertical-text {
+.home .vertical-text {
 	writing-mode: vertical-rl;
 	rotate: -180deg;
 	color: var(--light-grey);
-	font-size: 8rem;
+	font-size: 9rem;
 	font-weight: 400;
-	color: var(--light-grey);
+	color: #FFF;
+	opacity: 0.1;
 }
 
 .home-h1 {
 	padding-top: 3.25em;
+	color: var(--h1-color);
 }
 
+.home-background {
+	background-image: url("/img/background-turtle.png");
+	background-position-y: 0%;
+	background-size: 100%;
+}
+
+@media (max-width: 1440px) {
+	.home-background {
+		background-size: cover;
+	}
+}

@@ -1,40 +1,52 @@
 <!DOCTYPE HTML>
-<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<html
+	lang="de"
+	xmlns:th="http://www.thymeleaf.org">
 
-<th:block
-	th:replace="~{fragments/head :: head ('Liste aller Geisternetze')}"></th:block>
+<th:block th:replace="~{fragments/head :: head('Übersicht aller Geisternetze')}"></th:block>
 
 <body>
+	<th:block th:replace="~{fragments/header :: header}"></th:block>
+
 	<main>
 		<h1>Übersicht aller Netze</h1>
 
-		<div class="section-wrapper">
-			<section class="section container">
-				<table>
-					<thead>
-						<tr>
-							<th>Label</th>
-							<th>Status</th>
-							<th>GPS-Koordinaten</th>
-							<th>zuletzt geändert</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="net : ${ghostNets}">
-							<td th:text="${net.gpsCoordinates}"></td>
-							<td th:text="${net.size}"></td>
-							<td th:text="${net.status}"></td>
-						</tr>
-					</tbody>
-				</table>
+		<div class="section-wrapper overview">
+			<section class="section reported-nets-section container">
+				<h2>Gemeldete Netze</h2>
+				<div class="gapped">
+					<th:block
+						th:replace="~{fragments/ghost-net-card-list :: ghostNetCardList(netList=${reportedNets},
+							page=${reportedPage}, basePath=${reportedPath})}">
+					</th:block>
+					<th:block th:replace="~{fragments/ghost-net-map :: ghostNetMap(nets=${reportedNetsList})}"></th:block>
+				</div>
+			</section>
 
-				<div class=item-row>
-					<th:block th:replace="~{fragments/pagination :: pagination}"></th:block>
+			<section class="section recovery-nets-section container">
+				<h2>Bergung bevorstehend</h2>
+				<div class="gapped">
+					<th:block
+						th:replace="~{fragments/ghost-net-card-list :: ghostNetCardList(netList=${recoveryNets}, 
+							page=${recoveryPage}, basePath=${recoveryPath})}">
+					</th:block>
+				</div>
+			</section>
+
+			<section class="section recovered-lost-nets-section container">
+				<h2>Geborgene und verschollene Netze</h2>
+				<div class="gapped">
+					<th:block
+						th:replace="~{fragments/ghost-net-card-list :: ghostNetCardList(netList=${recoveredLostNets},
+							page=${recoveredLostPage}, basePath=${recoveredLostPath})}">
+					</th:block>
 				</div>
 			</section>
 		</div>
 	</main>
-</body>
 
+	<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+</body>
 
 </html>

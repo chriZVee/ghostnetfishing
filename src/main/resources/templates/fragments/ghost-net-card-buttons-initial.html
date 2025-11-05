@@ -1,6 +1,8 @@
-<div th:fragment="ghostNetCardButtonsInitial"
+<div
+	th:fragment="ghostNetCardButtonsInitial(net)"
 	class="ghost-net-card-buttons item-group"
 	xmlns:th="http://thymeleaf.org">
-	<button class="button button-small-white">${bergen}</button>
-	<button class="button button-small-grey">${verschollen}</button>
+	<a
+		th:href="@{/recover(id=${net.id})}"
+		class="button card-button">bergen</a>
 </div>

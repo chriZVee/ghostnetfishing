@@ -1,0 +1,43 @@
+/* REPORT SUCCESS CSS */
+.report-success .confirmation-message-container {
+	align-items: center;
+}
+
+.report-success .table-data {
+	color: #FFF;
+}
+
+.report-success .table-row {
+	display: grid;
+	grid-template-columns: .3fr .4fr .4fr .3fr .7fr .7fr;
+	gap: .5em 2em;
+	width: 100%;
+	margin: .5em;
+	justify-content: center;
+	text-align: center;
+}
+
+.report-success .table-data p {
+	background-color: var(--medium-grey);
+}
+
+.report-success .table-data:nth-of-type(odd) p {
+	background-color: var(--dark-grey);
+}
+
+.report-success .table-head {
+	font-weight: bold;
+}
+
+.report-success .success-table {
+	margin-bottom: 3rem;
+}
+
+.success-table .item-row {
+	margin-top: .5rem;
+}
+
+.report-success .highlighted p {
+	color: #FFF !important;
+	background: var(--highlight-bright) !important;
+}
