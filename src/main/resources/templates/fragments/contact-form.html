@@ -95,12 +95,21 @@
 							th:readonly="${formAction == '/report-recovered'}"
 							placeholder="" />
 					</div>
+					<div
+						class="errorMessage"
+						th:if="${#fields.hasErrors('user.name')}"
+						th:errors="*{user.name}"></div>
 
 					<div class="telefon">
 						<label th:for="*{user.telephone}">Telefon</label> <input
 							type="text"
 							th:field="*{user.telephone}" />
 					</div>
+
+					<div
+						class="errorMessage"
+						th:if="${#fields.hasErrors('user.telephone') and formAction != '/report'}"
+						th:errors="*{user.telephone}"></div>
 
 					<span
 						class="info-message-small"

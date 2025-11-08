@@ -21,7 +21,10 @@ import de.chriz.ghostnetfishing.model.GhostNetStatus;
 import de.chriz.ghostnetfishing.model.User;
 import de.chriz.ghostnetfishing.model.UserRole;
 import de.chriz.ghostnetfishing.repository.GhostNetRepository;
+import de.chriz.ghostnetfishing.validation.RecoverChecks;
 import de.chriz.ghostnetfishing.validation.ReportChecks;
+import de.chriz.ghostnetfishing.validation.ReportRecoveredChecks;
+
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Controller
@@ -170,8 +173,14 @@ public class GhostNetController {
 	}
 
 	@PostMapping("/recover")
-	public String submitRecover(@ModelAttribute GhostNet ghostNet, @RequestParam Long id, RedirectAttributes ra) {
+	public String submitRecover(@Validated(RecoverChecks.class) @ModelAttribute GhostNet ghostNet, BindingResult br,
+			@RequestParam Long id, RedirectAttributes ra) {
 		GhostNet updatedNet = ghostNetRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+
+		// Validierung
+		if (br.hasErrors()) {
+			return "recover";
+		}
 
 		// Errohandling - Falls kein User vorhanden ist
 		if (updatedNet.getUser() == null) {
@@ -208,8 +217,15 @@ public class GhostNetController {
 	}
 
 	@PostMapping("/report-recovered")
-	public String submitRecovered(@RequestParam Long id, @ModelAttribute GhostNet ghostNet, RedirectAttributes ra) {
+	public String submitRecovered(@RequestParam Long id,
+			@Validated(ReportRecoveredChecks.class) @ModelAttribute GhostNet ghostNet, BindingResult br,
+			RedirectAttributes ra) {
 		ghostNet = ghostNetRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+
+		// Validierung
+		if (br.hasErrors()) {
+			return "report-recovered";
+		}
 		// Sicherheitsprüfung des Nutzers
 		User user = ghostNet.getUser();
 		// wenn kein Nutzer vorhanden ist, erstelle einen neuen Nutzer

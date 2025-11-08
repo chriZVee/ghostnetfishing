@@ -2,6 +2,7 @@ package de.chriz.ghostnetfishing.model;
 
 import de.chriz.ghostnetfishing.validation.RecoverChecks;
 import de.chriz.ghostnetfishing.validation.ReportChecks;
+import de.chriz.ghostnetfishing.validation.ReportRecoveredChecks;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
@@ -13,21 +14,25 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(groups = RecoverChecks.class, message = "Name erforderlich")
+	@NotBlank(groups = RecoverChecks.class, message = "Bitte Name angeben")
 	@Column(nullable = true)
-	private String name; // Selbstgewählter Name des Nutzers
+	private String name; // Name des Nutzers
 
-	@NotBlank(groups = RecoverChecks.class, message = "Telefon erforderlich")
+	@NotBlank(groups = { RecoverChecks.class, ReportRecoveredChecks.class }, message = "Bitte Telefon angeben")
 	@Column(nullable = true)
 	private String telephone; // Telefonnummer des Nutzers
 
 	@Column(nullable = false)
 	private boolean anonym; // Wert für Checkbox, für anonyme Reports
-	
-	// Report-Validation
-	@AssertTrue(groups = ReportChecks.class, message = "Bitte Name und Telefon angeben")
+
+	// Report-Validierung
+	@AssertTrue(groups = ReportChecks.class, message = "Bitte Name und Telefonnummer"
+			+ " angeben oder \"anonym\" bleiben auswählen")
 	public boolean isContactDetailsValid() {
-		return anonym || (name != null && !name.isBlank() || telephone != null && !telephone.isBlank());
+		if (anonym || (((telephone != null) && !telephone.isBlank()) && ((name != null) && !name.isBlank()))) {
+			return true;
+		}
+		return false;
 	}
 
 	@Enumerated(EnumType.STRING)
